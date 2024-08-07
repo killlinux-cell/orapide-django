@@ -6,7 +6,11 @@
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
 <div class="container">
+	{% if 'search' in request.path %}
+	<h2 class="title-page">Résultat de la recherche ...</h2>
+	{% else %}
 	<h2 class="title-page">Boutique</h2>
+	{% endif %}
 
 </div> <!-- container //  -->
 </section>
@@ -44,7 +48,7 @@
 		<header class="card-header">
 			<a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
 				<i class="icon-control fa fa-chevron-down"></i>
-				<h6 class="title">Sizes </h6>
+				<h6 class="title">Dimensions </h6>
 			</a>
 		</header>
 		<div class="filter-content collapse show" id="collapse_4" style="">
@@ -76,7 +80,7 @@
 		<header class="card-header">
 			<a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
 				<i class="icon-control fa fa-chevron-down"></i>
-				<h6 class="title">Price range </h6>
+				<h6 class="title">Echelle de prix </h6>
 			</a>
 		</header>
 		<div class="filter-content collapse show" id="collapse_3" style="">
@@ -87,25 +91,25 @@
 				  <label>Min</label>
 				  <!-- <input class="form-control" placeholder="$0" type="number"> -->
 				  	<select class="mr-2 form-control">
-						<option value="0">$0</option>
-						<option value="50">$50</option>
-						<option value="100">$100</option>
-						<option value="150">$150</option>
-						<option value="200">$200</option>
-						<option value="500">$500</option>
-						<option value="1000">$1000</option>
+						<option value="0">0 fcfa</option>
+						<option value="50">5000 fcfa</option>
+						<option value="100">10000 fcfa</option>
+						<option value="150">15000 fcfa</option>
+						<option value="200">20000 fcfa</option>
+						<option value="500">50000 fcfa</option>
+						<option value="1000">100000 fcfa</option>
 					</select>
 				</div>
 				<div class="form-group text-right col-md-6">
 				  <label>Max</label>
 				  	<select class="mr-2 form-control">
-						<option value="50">$50</option>
-						<option value="100">$100</option>
-						<option value="150">$150</option>
-						<option value="200">$200</option>
-						<option value="500">$500</option>
-						<option value="1000">$1000</option>
-						<option value="2000">$2000+</option>
+						<option value="50">5000 fcfa</option>
+						<option value="100">10000 fcfa</option>
+						<option value="150">15000 fcfa</option>
+						<option value="200">20000 fcfa</option>
+						<option value="500">50000 fcfa</option>
+						<option value="1000">100000 fcfa</option>
+						<option value="2000">200000 fcfa +</option>
 					</select>
 				</div>
 				</div> <!-- form-row.// -->
@@ -127,6 +131,7 @@
 </header><!-- sect-heading -->
 
 <div class="row">
+	{% if products %}
 	{% for product in products %}
 	<div class="col-md-4">
 		<figure class="card card-product-grid">
@@ -143,22 +148,43 @@
 						<!-- <del class="price-old">$1980</del> -->
 					</div> <!-- price-wrap.// -->
 				</div>
-				<a href="#" class="btn btn-block btn-primary">Ajouter au panier </a>
+				<a href="{{ product.get_url }}" class="btn btn-block btn-primary">Voir les détails </a>
 			</figcaption>
 		</figure>
 	</div> <!-- col.// -->
 	{% endfor %}
+	{% else %}
+	<div>
+		<h2>Aucun résultat n'a été trouvé. Veuillez réessayer</h2>
+	</div>
+	{% endif %}
 </div> <!-- row end.// -->
 
 
 <nav class="mt-4" aria-label="Page navigation sample">
+	{% if product.has_other_pages %}
   <ul class="pagination">
+	  {% if product.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}">retour</a></li>
+	  {% else %}
     <li class="page-item disabled"><a class="page-link" href="#">retour</a></li>
-    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Suivant</a></li>
+	  {% endif %}
+
+	  {% for i in products.paginator.page_range %}
+	  	{% if products.number == i %}
+    <li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
+	  {% else %}
+	  <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+	  {% endif %}
+	  {% endfor %}
+
+	  {% if product.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}">Suivant</a></li>
+	  {% else %}
+	<li class="page-item"><a class="page-link" href="#">Suivant</a></li>
+	  {% endif %}
   </ul>
+	{% endif %}
 </nav>
 
 	</main> <!-- col.// -->
