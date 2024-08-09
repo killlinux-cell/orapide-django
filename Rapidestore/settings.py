@@ -142,11 +142,3 @@ MESSAGE_TAGS = {
 
 
 # SMTP configuration
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'orapide.israel@outlook.com'
-EMAIL_HOST_PASSWORD = 'Orapide2024@'
-DEFAULT_FROM_EMAIL = 'orapide.israel@outlook.com'
