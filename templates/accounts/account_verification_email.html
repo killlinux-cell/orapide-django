@@ -1,0 +1,12 @@
+{% autoescape off %}
+
+Bonjour {{ user.first_name }}
+
+Merci pour votre inscription sur notre site ! Veuillez cliquer sur le lien ci-dessous pour valider votre adresse email :
+
+http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+Si vous n'avez pas créé de compte, vous pouvez ignorer cet email.
+Merci,
+L'équipe Orapide
+{% endautoescape %}
