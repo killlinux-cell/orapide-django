@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9w!u)4c@+=)-u6y69%t!g8u5rz=@uwwp-28(!h85%w25rml(hi'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True,cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -31,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +43,9 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    'orders',
+    'axes',
+
 ]
 
 MIDDLEWARE = [
@@ -51,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'Rapidestore.urls'
@@ -111,15 +117,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = 'fr'
+TIME_ZONE = 'Africa/Abidjan'
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
+
+DATE_FORMAT = 'd F Y'  # Exemple : 14 août 2024
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -143,10 +149,29 @@ MESSAGE_TAGS = {
 
 # SMTP configuration
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'orapide.israel@outlook.com'
-EMAIL_HOST_PASSWORD = 'Orapide2024@'
-DEFAULT_FROM_EMAIL = 'orapide.israel@outlook.com'
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+
+
+
+
+AXES_FAILURE_LIMIT = 5  # Nombre de tentatives de connexion avant blocage
+AXES_COOLOFF_TIME = 1   # Temps d'attente avant de pouvoir réessayer, en heures
+AXES_USE_USER_AGENT = True  # Pour suivre les tentatives avec l'agent utilisateur
+
+
+
+# PayDunya API configuration
+PAYDUNYA_ACCESS_TOKENS = {
+    'master_key': 'STcNmJm6-m2Cw-sTbj-74my-l4e7YfJfqZ7B',
+    'private_key': 'test_private_1YuB6ljZFYnGPu5JeoIoitK9b7F',
+    'public_key': 'test_public_frAphM7i8VG3FvjlBM7Py2dIQAT',
+    'token': 'Y1Xp46l5WnyQb3Qgcjao'
+}
+
+PAYDUNYA_MODE = 'test'  # Utilisez 'test' pour le mode test

@@ -66,9 +66,23 @@
 	<div class="col-md-3">
 		<div class="card card-product-grid">
 			<a href="{{ product.get_url }}" class="img-wrap"> <img src="{{ product.images.url }}"> </a>
+            {% if product.on_promotion %}
+        <span class="badge badge-danger" style="position: absolute; top: 10px; left: 10px;">En Promotion</span>
+        {% endif %}
 			<figcaption class="info-wrap">
 				<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
 				<div class="price mt-1">{{ product.price }} fcfa</div> <!-- price-wrap.// -->
+
+                <!-- <div class="rating-star">
+					<span>
+						<i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}"></i>
+						<i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}"></i>
+						<i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}"></i>
+						<i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}"></i>
+						<i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}"></i>
+
+					</span>
+				</div> -->
 			</figcaption>
 		</div>
 	</div> <!-- col.// -->
@@ -77,6 +91,87 @@
 
 </div><!-- container // -->
 </section>
+<!-- ========================= SECTION  END// ========================= -->
+<section class="section-name padding-y-sm bg-light">
+    <div class="container">
+        <header class="section-heading">
+            <h3 class="section-title">Promotions / Offres Spéciales</h3>
+        </header><!-- sect-heading -->
+
+        <div class="row">
+            {% for product in products %}
+                {% if product.on_promotion %}
+                    <div class="col-md-3">
+                        <div class="card card-product-grid">
+                            <a href="{{ product.get_url }}" class="img-wrap">
+                                <img src="{{ product.images.url }}">
+                                <span class="badge badge-danger" style="position: absolute; top: 10px; right: 10px;">PROMO</span>
+                            </a>
+                            <figcaption class="info-wrap">
+                                <a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+                                <div class="price mt-1">{{ product.price }} fcfa</div>
+                                <!-- Ajouter la section des étoiles ici si nécessaire -->
+                            </figcaption>
+                        </div>
+                    </div> <!-- col.// -->
+                {% endif %}
+            {% endfor %}
+        </div> <!-- row.// -->
+
+    </div><!-- container // -->
+</section>
+
+<!-- ========================= SECTION  END// ========================= -->
+<section class="section-banner bg-primary text-white padding-y-sm">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h3 class="banner-title">Restez Informé !</h3>
+                <p class="banner-text">Inscrivez-vous à notre newsletter pour recevoir les dernières nouvelles, offres spéciales, et bien plus encore directement dans votre boîte mail.</p>
+            </div>
+            <div class="col-md-4 text-md-right">
+                <form method="POST" action="{% url 'subscribe_newsletter' %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="email" name="email" class="form-control" placeholder="Votre e-mail" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-light" type="submit">S'inscrire maintenant</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- container // -->
+</section>
+
+<!-- ========================= SECTION  END// ========================= -->
+
+<div class="container my-5">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="feature-box">
+                <i class="fa fa-truck fa-3x mb-3" aria-hidden="true"></i>
+                <h5>Paiement à la livraison</h5>
+                <p>Réglez vos achats à la livraison, en toute simplicité.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <i class="fa fa-headset fa-3x mb-3" aria-hidden="true"></i>
+                <h5>Service client H24</h5>
+                <p>Notre service client est disponible 24h/24 pour vous aider.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <i class="fa fa-check-circle fa-3x mb-3" aria-hidden="true"></i>
+                <h5>Produits de qualité</h5>
+                <p>Nous garantissons des produits de la meilleure qualité.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ========================= SECTION  END// ========================= -->
 
 
